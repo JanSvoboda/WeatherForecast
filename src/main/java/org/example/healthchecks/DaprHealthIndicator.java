@@ -1,6 +1,8 @@
 package org.example.healthchecks;
 
 import io.dapr.client.DaprClient;
+import io.dapr.client.DaprClientBuilder;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
@@ -10,6 +12,9 @@ public class DaprHealthIndicator implements HealthIndicator {
 
     private final DaprClient daprClient;
 
+    public DaprHealthIndicator() {
+        daprClient = new DaprClientBuilder().build();
+    }
     public DaprHealthIndicator(DaprClient daprClient) {
         this.daprClient = daprClient;
     }

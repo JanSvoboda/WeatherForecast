@@ -28,7 +28,7 @@ public class WeatherForecastControllerImpl implements WeatherForecastController 
         logger.info("Request received for weather forecast.");
 
         List<WeatherForecast> response = IntStream.range(1,5).mapToObj(index -> {
-            LocalDate date = LocalDate.now().plusDays(index)
+            LocalDate date = LocalDate.now().plusDays(index);
             Random random = new Random();
             int temperatureC = random.nextInt(75) - 20;
             String summary = summaries[random.nextInt(summaries.length)];

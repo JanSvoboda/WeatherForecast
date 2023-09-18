@@ -1,20 +1,15 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
-EXPOSE 80
+﻿FROM maven:3.9.4-amazoncorretto-17 AS build
+WORKDIR /
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
-COPY ["Healthchecks", "Healthchecks/"]
-COPY ["ForecastAPI/ForecastAPI.csproj", "ForecastAPI/"]
-RUN dotnet restore "ForecastAPI/ForecastAPI.csproj"
-COPY . .
-WORKDIR "/src/ForecastAPI"
-RUN dotnet build "ForecastAPI.csproj" -c Release -o /app/build
+COPY ["/src", "/src"]
+COPY ["pom.xml", "pom.xml"]
 
-FROM build AS publish
-RUN dotnet publish "ForecastAPI.csproj" -c Release -o /app/publish
+RUN mvn clean package spring-boot:repackage
+RUN mvn clean package
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ForecastAPI.dll"]
+FROM eclipse-temurin:17-jdk-ubi9-minimal as base
+EXPOSE 8081
+WORKDIR /
+COPY --from=build /target/*.jar /app/weather.jar
+ENTRYPOINT ["java", "-jar", "/app/weather.jar"]
+v

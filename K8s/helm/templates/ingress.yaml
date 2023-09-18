@@ -16,4 +16,4 @@ spec:
               service:
                 name: forecast-api
                 port:
-                  number: 8080
+                  number: 8081
