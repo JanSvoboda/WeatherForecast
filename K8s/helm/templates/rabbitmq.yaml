@@ -1,0 +1,62 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: rabbitmq
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: weather
+    service: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: weather
+        service: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3.11-management
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: amqp
+              containerPort: 5672
+              protocol: TCP
+            - name: http
+              containerPort: 15672
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/rabbitmq
+              name: rabbitmq-data
+              readOnly: false
+      volumes:
+        - name: rabbitmq-data
+          hostPath:
+            path: /home/honza/k8s/weatherforecast/rabbitmq/
+            type: Directory
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: rabbitmq
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: weather
+    service: rabbitmq
+spec:
+  ports:
+    - port: 5672
+      targetPort: 5672
+      protocol: TCP
+      name: amqp
+    - port: 15672
+      targetPort: 15672
+      protocol: TCP
+      name: http
+  selector:
+    service: rabbitmq

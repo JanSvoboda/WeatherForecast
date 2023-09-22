@@ -12,4 +12,3 @@ EXPOSE 8081
 WORKDIR /
 COPY --from=build /target/*.jar /app/weather.jar
 ENTRYPOINT ["java", "-jar", "/app/weather.jar"]
-v

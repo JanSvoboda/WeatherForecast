@@ -7,13 +7,13 @@ import java.util.Date;
 
 @Data
 public class WeatherForecast {
-    private LocalDate date;
+    private String date;
     private int temperatureC;
 
     private int temperatureF;
     private String summary;
 
-    public WeatherForecast(LocalDate date, int temperatureC, String summary) {
+    public WeatherForecast(String date, int temperatureC, String summary) {
         this.date = date;
         this.temperatureC = temperatureC;
         this.summary = summary;

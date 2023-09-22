@@ -22,6 +22,14 @@
 
     eval $(minikube -p docker-env)
 
+#### Build image for minikube docker context
+    
+    1. switch to minikube docker context
+    docker context use minikube
+    
+    2. build docker image
+    docker build . -t weatherforecast:1.0
+
 ## Minikube
 
 #### Minikube start
@@ -49,3 +57,24 @@
 #### DAPR dashboard
 
     dapr dashboard -k -p 9080
+
+## HELM
+
+#### Upgrade/install helm chart
+
+    helm upgrade weatherforecast . -f values.yaml --force --install
+    
+    weatherforecast - name of release
+    --force - force resource update through replacement
+    --install - if a realease don't exist yet install it
+
+## KUBECTL
+
+#### Delete namespace
+
+    kubectl delete namespace weather-forecast
+
+#### Port forward port
+    
+    kubectl port-forward service/rabbitmq 15672:15672 --namespace weather-forecast 
+    
